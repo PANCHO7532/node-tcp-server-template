@@ -1,0 +1,11 @@
+{
+  "name": "node-tcp-server-template",
+  "version": "1.0.0",
+  "description": "Shitty template that i use when i need an TCP server with Node.JS in a few minutes to do something stupid",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "PANCHO7532",
+  "license": "MIT"
+}
