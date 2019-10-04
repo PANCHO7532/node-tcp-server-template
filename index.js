@@ -13,8 +13,13 @@ function commandProcessing(socket, os) {
     if(os == "win") {
         var eol_os = "\r\n";
         var message = socket.incData.substring(0, socket.incData.length-2);
+    } else if(os == "gnu") {
+        //assuming linux, tbh its the same behaviour
+        var eol_os = "\r\n";
+        var message = socket.incData.substring(0, socket.incData.length-2);
     } else {
-        //assuming linux tbh
+        //04-10-19: well i dont know how it is supposed to reach this point
+        //UPDATE: got it :/
         var eol_os = "\n";
         var message = socket.incData.substring(0, socket.incData.length-1);
     }
@@ -28,7 +33,7 @@ function commandProcessing(socket, os) {
     * for your clients, you can add eol_os variable to your response.
     */
     if(message == "HELLO") {
-        socket.write("Helo world!" + eol_os);
+        socket.write("Hello world!" + eol_os);
     } else if(message == "QUIT") {
         socket.end();
     }
@@ -50,7 +55,10 @@ net.createServer(function(socket){
         socket.incData = ""; //to store incoming content, do not delete
         /*
         * Here you can add startup action commands that will execute when a new client connects to your server
+        * FUN FACT: If an TCP Connection doesn't sends text, the written characters are not shown until the server
+        * answers something, this, however, happens only in Windows apparently
         */
+        socket.write("TCP Server\r\n");
     }
     socket.on('data', function(data) {
         socket.incData += data;
@@ -59,13 +67,17 @@ net.createServer(function(socket){
             //sending command to parsing...
             commandProcessing(socket, "win");
             socket.incData = ""; //cleaning shit
-        } else if(data.toString().substring(data.length-1, data.length) == "\n") {
-            //is unix/linux
+        } else if(data.toString().substring(data.length-2, data.length) == "\r\n") {
+            //is unix/linux (?)
             //sending command to parsing...
             commandProcessing(socket, "gnu");
             socket.incData = ""; //cleaning shit
+        } else if(data.toString().substring(data.length-1, data.length) == "\n") {
+            //detecting only \n, maybe an generic program (?)
+            commandProcessing(socket, "generic");
+            socket.incData = ""; //cleaning shit... again
         } else {
-            //what i'm supposed to do at this time?
+            //well i dunno whats this
             return;
         }
     });
