@@ -7,7 +7,7 @@ Shitty template that i use when i need an TCP server with Node.JS in a few minut
 3) Windows and GNU/Linux automatic detection of EOL (not so automatic but its something)
 
 ## Bugs
-1) I haven't tested on Linux... yet, so there may be some bugs
+- Nothing by the moment, feel free to open an issue if you found something!
 
 ## Usage
 - Write your commands under the commandProcessing function, example:
